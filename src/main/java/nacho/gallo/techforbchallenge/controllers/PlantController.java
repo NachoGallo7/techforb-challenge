@@ -35,8 +35,8 @@ public class PlantController {
   public ResponseEntity<Page<PlantDTO>> getAll(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size,
                                                @RequestParam(defaultValue = "updateDate") String sort,
-                                               @RequestParam(defaultValue = "DESC", name = "sort_direction") String sortDirection) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sort.split(",")));
+                                               @RequestParam(defaultValue = "DESC", name = "sort_direction") Sort.Direction sortDirection) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort.split(",")));
     return ResponseEntity.ok(plantService.getAll(pageable));
   }
 
@@ -52,7 +52,7 @@ public class PlantController {
 
   @PutMapping("{id}")
   public ResponseEntity<PlantDTO> update(@PathVariable Long id, @RequestBody PutPlantDTO updatedPlant) {
-    return ResponseEntity.ok(plantService.update(updatedPlant));
+    return ResponseEntity.ok(plantService.update(id, updatedPlant));
   }
 
   @DeleteMapping("{id}")

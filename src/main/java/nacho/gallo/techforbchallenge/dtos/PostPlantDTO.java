@@ -15,4 +15,6 @@ public class PostPlantDTO {
   private String name;
   @JsonProperty("country")
   private String country;
+  @JsonProperty("contry_code")
+  private String contryCode;
 }

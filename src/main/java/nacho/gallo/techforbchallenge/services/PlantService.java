@@ -12,6 +12,6 @@ public interface PlantService {
   Page<PlantDTO> getAll(Pageable pageable);
   PlantDTO getById(Long id);
   PlantDTO create(PostPlantDTO newPlant);
-  PlantDTO update(PutPlantDTO updatedPlant);
+  PlantDTO update(Long id, PutPlantDTO updatedPlant);
   void delete(Long id);
 }

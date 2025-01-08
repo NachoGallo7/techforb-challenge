@@ -1,6 +1,5 @@
 package nacho.gallo.techforbchallenge.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "PLANTS")
-public class Plant extends BaseEntity{
+public class PlantEntity extends BaseEntity{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
