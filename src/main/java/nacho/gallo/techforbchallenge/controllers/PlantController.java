@@ -1,5 +1,6 @@
 package nacho.gallo.techforbchallenge.controllers;
 
+import jakarta.validation.Valid;
 import nacho.gallo.techforbchallenge.dtos.PlantDTO;
 import nacho.gallo.techforbchallenge.dtos.PostPlantDTO;
 import nacho.gallo.techforbchallenge.dtos.PutPlantDTO;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,12 +48,12 @@ public class PlantController {
   }
 
   @PostMapping
-  public ResponseEntity<PlantDTO> create(@RequestBody PostPlantDTO newPlant) {
+  public ResponseEntity<PlantDTO> create(@RequestBody @Valid PostPlantDTO newPlant) {
     return ResponseEntity.ok(plantService.create(newPlant));
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<PlantDTO> update(@PathVariable Long id, @RequestBody PutPlantDTO updatedPlant) {
+  public ResponseEntity<PlantDTO> update(@PathVariable Long id, @RequestBody @Valid PutPlantDTO updatedPlant) {
     return ResponseEntity.ok(plantService.update(id, updatedPlant));
   }
 

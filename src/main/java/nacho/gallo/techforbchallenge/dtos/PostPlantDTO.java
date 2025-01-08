@@ -1,6 +1,9 @@
 package nacho.gallo.techforbchallenge.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +15,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostPlantDTO {
   @JsonProperty("name")
+  @NotEmpty(message = "Name cannot be empty")
   private String name;
   @JsonProperty("country")
+  @NotEmpty(message = "Country cannot be empty")
   private String country;
   @JsonProperty("contry_code")
+  @NotEmpty(message = "Contry code cannot be empty")
   private String contryCode;
 }
