@@ -1,0 +1,63 @@
+package nacho.gallo.techforbchallenge.configs;
+
+import nacho.gallo.techforbchallenge.security_filters.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+  private final UserDetailsService userDetailsService;
+  private final BCryptPasswordEncoder bCryptEncoder;
+  private final JwtFilter jwtFilter;
+
+  @Autowired
+  public SecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptEncoder, JwtFilter jwtFilter) {
+    this.userDetailsService = userDetailsService;
+    this.bCryptEncoder = bCryptEncoder;
+    this.jwtFilter = jwtFilter;
+  }
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    return httpSecurity
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(req -> req
+            .requestMatchers("/ping", "/login", "/register").permitAll()
+            .anyRequest().authenticated()
+        )
+        .formLogin(Customizer.withDefaults())
+        .httpBasic(Customizer.withDefaults())
+        .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
+  }
+
+  @Bean
+  public AuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+    authenticationProvider.setPasswordEncoder(bCryptEncoder);
+    authenticationProvider.setUserDetailsService(userDetailsService);
+    return authenticationProvider;
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfig) throws Exception {
+    return authenticationConfig.getAuthenticationManager();
+  }
+}

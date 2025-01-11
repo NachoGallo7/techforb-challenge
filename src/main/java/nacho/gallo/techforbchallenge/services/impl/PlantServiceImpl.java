@@ -1,8 +1,8 @@
 package nacho.gallo.techforbchallenge.services.impl;
 
-import nacho.gallo.techforbchallenge.dtos.PlantDTO;
-import nacho.gallo.techforbchallenge.dtos.PostPlantDTO;
-import nacho.gallo.techforbchallenge.dtos.PutPlantDTO;
+import nacho.gallo.techforbchallenge.dtos.plant.PlantDTO;
+import nacho.gallo.techforbchallenge.dtos.plant.PostPlantDTO;
+import nacho.gallo.techforbchallenge.dtos.plant.PutPlantDTO;
 import nacho.gallo.techforbchallenge.entities.PlantEntity;
 import nacho.gallo.techforbchallenge.repositories.PlantJpaRepository;
 import nacho.gallo.techforbchallenge.services.PlantService;

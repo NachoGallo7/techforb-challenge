@@ -1,4 +1,4 @@
-package nacho.gallo.techforbchallenge.dtos;
+package nacho.gallo.techforbchallenge.dtos.plant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;

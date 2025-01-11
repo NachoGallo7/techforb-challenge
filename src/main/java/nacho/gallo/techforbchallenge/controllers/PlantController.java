@@ -1,9 +1,9 @@
 package nacho.gallo.techforbchallenge.controllers;
 
 import jakarta.validation.Valid;
-import nacho.gallo.techforbchallenge.dtos.PlantDTO;
-import nacho.gallo.techforbchallenge.dtos.PostPlantDTO;
-import nacho.gallo.techforbchallenge.dtos.PutPlantDTO;
+import nacho.gallo.techforbchallenge.dtos.plant.PlantDTO;
+import nacho.gallo.techforbchallenge.dtos.plant.PostPlantDTO;
+import nacho.gallo.techforbchallenge.dtos.plant.PutPlantDTO;
 import nacho.gallo.techforbchallenge.services.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
