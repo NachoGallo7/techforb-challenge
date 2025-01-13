@@ -3,8 +3,9 @@ package nacho.gallo.techforbchallenge.services.impl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import nacho.gallo.techforbchallenge.dtos.user.SignUserDTO;
+import nacho.gallo.techforbchallenge.models.User;
+import nacho.gallo.techforbchallenge.repositories.RevokedTokensJpaRepository;
 import nacho.gallo.techforbchallenge.services.JwtService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyGenerator;
@@ -19,8 +20,10 @@ import java.util.Objects;
 public class JwtServiceImpl implements JwtService {
 
   private SecretKey secretKey;
+  private final RevokedTokensJpaRepository revokedTokensRepository;
 
-  public JwtServiceImpl() throws NoSuchAlgorithmException {
+  public JwtServiceImpl(RevokedTokensJpaRepository revokedTokensRepository) throws NoSuchAlgorithmException {
+    this.revokedTokensRepository = revokedTokensRepository;
     this.secretKey = KeyGenerator.getInstance("HmacSHA256").generateKey();
   }
 
@@ -44,14 +47,18 @@ public class JwtServiceImpl implements JwtService {
   }
 
   @Override
-  public Boolean validateToken(String jwtToken, UserDetails user) {
+  public Boolean validateToken(String jwtToken, User user) {
     Claims claims = getTokenClaims(jwtToken);
-    return claims.getSubject().equals(user.getUsername())
+    boolean isTokenRevoked = revokedTokensRepository.existsById(jwtToken);
+
+    return !isTokenRevoked
+        && claims.getSubject().equals(user.getUsername())
         && claims.getExpiration().after(Date.from(Instant.now()))
         && (Objects.isNull(claims.getNotBefore()) || claims.getNotBefore().before(Date.from(Instant.now())));
   }
 
-  private Claims getTokenClaims(String jwtToken) {
+  @Override
+  public Claims getTokenClaims(String jwtToken) {
     return Jwts.parser()
         .verifyWith(secretKey)
         .build()

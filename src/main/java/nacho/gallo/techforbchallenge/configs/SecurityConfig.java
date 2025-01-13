@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -25,12 +26,14 @@ public class SecurityConfig {
   private final UserDetailsService userDetailsService;
   private final BCryptPasswordEncoder bCryptEncoder;
   private final JwtFilter jwtFilter;
+  private final LogoutHandler logoutHandler;
 
   @Autowired
-  public SecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptEncoder, JwtFilter jwtFilter) {
+  public SecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptEncoder, JwtFilter jwtFilter, LogoutHandler logoutHandler) {
     this.userDetailsService = userDetailsService;
     this.bCryptEncoder = bCryptEncoder;
     this.jwtFilter = jwtFilter;
+    this.logoutHandler = logoutHandler;
   }
 
   @Bean
@@ -38,11 +41,12 @@ public class SecurityConfig {
     return httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(req -> req
-            .requestMatchers("/ping", "/login", "/register").permitAll()
+            .requestMatchers("/ping", "/users/login", "/users/register").permitAll()
             .anyRequest().authenticated()
         )
         .formLogin(Customizer.withDefaults())
         .httpBasic(Customizer.withDefaults())
+        .logout(customizer -> customizer.addLogoutHandler(logoutHandler).logoutUrl("/users/logout"))
         .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
@@ -60,4 +64,5 @@ public class SecurityConfig {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfig) throws Exception {
     return authenticationConfig.getAuthenticationManager();
   }
+
 }

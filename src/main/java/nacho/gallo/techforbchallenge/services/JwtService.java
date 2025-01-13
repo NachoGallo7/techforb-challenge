@@ -1,6 +1,8 @@
 package nacho.gallo.techforbchallenge.services;
 
+import io.jsonwebtoken.Claims;
 import nacho.gallo.techforbchallenge.dtos.user.SignUserDTO;
+import nacho.gallo.techforbchallenge.models.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +12,7 @@ public interface JwtService {
 
   String extractUsername(String jwtToken);
 
-  Boolean validateToken(String jwtToken, UserDetails user);
+  Boolean validateToken(String jwtToken, User user);
+
+  Claims getTokenClaims(String jwtToken);
 }

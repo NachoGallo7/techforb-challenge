@@ -41,6 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
         || !authorizationHeader.startsWith("Bearer ")
         || Objects.nonNull(SecurityContextHolder.getContext().getAuthentication())) {
       filterChain.doFilter(request, response); //TODO: NO REPETIR ESTO
+      return;
     }
 
     String jwtToken = authorizationHeader.substring(7);
@@ -48,12 +49,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
     if(Strings.isEmpty(username)) {
       filterChain.doFilter(request, response);
+      return;
     }
 
     User user = userService.findByEmail(username);
 
     if (!jwtService.validateToken(jwtToken, user)) {
       filterChain.doFilter(request, response);
+      return;
     }
 
     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

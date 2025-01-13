@@ -1,5 +1,6 @@
 package nacho.gallo.techforbchallenge;
 
+import nacho.gallo.techforbchallenge.configs.SecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
