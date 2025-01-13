@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,29 +37,34 @@ public class PlantController {
   public ResponseEntity<Page<PlantDTO>> getAll(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size,
                                                @RequestParam(defaultValue = "updateDate") String sort,
-                                               @RequestParam(defaultValue = "DESC", name = "sort_direction") Sort.Direction sortDirection) {
+                                               @RequestParam(defaultValue = "DESC", name = "sort_direction") Sort.Direction sortDirection,
+                                               @RequestHeader(name = "Authorization") String authToken) {
     Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort.split(",")));
-    return ResponseEntity.ok(plantService.getAll(pageable));
+    return ResponseEntity.ok(plantService.getAll(pageable, authToken));
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<PlantDTO> getById(@PathVariable Long id) {
-    return ResponseEntity.ok(plantService.getById(id));
+  public ResponseEntity<PlantDTO> getById(@PathVariable Long id,
+                                          @RequestHeader(name = "Authorization") String authToken) {
+    return ResponseEntity.ok(plantService.getById(id, authToken));
   }
 
   @PostMapping
-  public ResponseEntity<PlantDTO> create(@RequestBody @Valid PostPlantDTO newPlant) {
-    return ResponseEntity.ok(plantService.create(newPlant));
+  public ResponseEntity<PlantDTO> create(@RequestBody @Valid PostPlantDTO newPlant,
+                                         @RequestHeader(name = "Authorization") String authToken) {
+    return ResponseEntity.ok(plantService.create(newPlant, authToken));
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<PlantDTO> update(@PathVariable Long id, @RequestBody @Valid PutPlantDTO updatedPlant) {
-    return ResponseEntity.ok(plantService.update(id, updatedPlant));
+  public ResponseEntity<PlantDTO> update(@PathVariable Long id, @RequestBody @Valid PutPlantDTO updatedPlant,
+                                         @RequestHeader(name = "Authorization") String authToken) {
+    return ResponseEntity.ok(plantService.update(id, updatedPlant, authToken));
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id) {
-    plantService.delete(id);
+  public ResponseEntity<Void> delete(@PathVariable Long id,
+                                     @RequestHeader(name = "Authorization") String authToken) {
+    plantService.delete(id, authToken);
     return ResponseEntity.noContent().build();
   }
 

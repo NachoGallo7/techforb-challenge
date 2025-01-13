@@ -31,7 +31,7 @@ public class JwtServiceImpl implements JwtService {
   public String generateToken(SignUserDTO validateUser) {
     return Jwts.builder()
         .claims()
-        .issuer("Techforb")
+        .issuer("TechforbChallengeApp")
         .subject(validateUser.getEmail())
         .issuedAt(Date.from(Instant.now()))
         .expiration(Date.from(Instant.now().plus(10, ChronoUnit.DAYS)))
@@ -41,7 +41,7 @@ public class JwtServiceImpl implements JwtService {
   }
 
   @Override
-  public String extractUsername(String jwtToken) {
+  public String extractSubject(String jwtToken) {
     Claims claims = getTokenClaims(jwtToken);
     return claims.getSubject();
   }

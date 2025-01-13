@@ -30,4 +30,6 @@ public class Plant {
   private Integer disabledSensors;
   @JsonProperty("is_active")
   private Boolean isActive;
+  @JsonProperty("user")
+  private User user;
 }
