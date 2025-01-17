@@ -17,8 +17,8 @@ public class PlantDTO {
   private String name;
   @JsonProperty("country")
   private String country;
-  @JsonProperty("contry_code")
-  private String contryCode;
+  @JsonProperty("country_code")
+  private String countryCode;
   @JsonProperty("readings")
   private Integer readings;
   @JsonProperty("warnings")

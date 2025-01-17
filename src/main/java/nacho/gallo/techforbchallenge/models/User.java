@@ -20,6 +20,8 @@ import java.util.Set;
 public class User implements UserDetails {
   @JsonProperty("id")
   private Long id;
+  @JsonProperty("username")
+  private String username;
   @JsonProperty("email")
   private String email;
   @JsonProperty("password")

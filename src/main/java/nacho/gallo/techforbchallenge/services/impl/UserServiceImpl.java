@@ -1,6 +1,8 @@
 package nacho.gallo.techforbchallenge.services.impl;
 
+import nacho.gallo.techforbchallenge.dtos.user.RegisterUserDTO;
 import nacho.gallo.techforbchallenge.dtos.user.SignUserDTO;
+import nacho.gallo.techforbchallenge.dtos.user.TokenDTO;
 import nacho.gallo.techforbchallenge.dtos.user.UserDTO;
 import nacho.gallo.techforbchallenge.entities.UserEntity;
 import nacho.gallo.techforbchallenge.models.User;
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDTO register(SignUserDTO newUser) {
+  public UserDTO register(RegisterUserDTO newUser) {
     UserEntity userEntity = modelMapper.map(newUser, UserEntity.class);
     userEntity.setPassword(bCryptEncoder.encode(userEntity.getPassword()));
     userEntity.setCreationDate(LocalDateTime.now());
@@ -50,14 +52,16 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public String login(SignUserDTO validateUser) {
+  public TokenDTO login(SignUserDTO validateUser) {
     Authentication authentication = authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(validateUser.getEmail(), validateUser.getPassword()));
     if(!authentication.isAuthenticated()) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect credentials");
     }
 
-    return jwtService.generateToken(validateUser);
+    return TokenDTO.builder()
+        .token(jwtService.generateToken(validateUser))
+        .build();
   }
 
   @Override
