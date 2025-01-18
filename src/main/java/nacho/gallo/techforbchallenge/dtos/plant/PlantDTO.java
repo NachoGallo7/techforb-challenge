@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nacho.gallo.techforbchallenge.models.PlantDetail;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,4 +33,6 @@ public class PlantDTO {
   private Integer disabledSensors;
   @JsonProperty("is_active")
   private Boolean isActive;
+  @JsonProperty("plant_details")
+  private Set<PlantDetail> plantDetails = new LinkedHashSet<>();
 }

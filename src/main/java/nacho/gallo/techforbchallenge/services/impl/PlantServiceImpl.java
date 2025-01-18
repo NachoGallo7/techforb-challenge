@@ -6,6 +6,7 @@ import nacho.gallo.techforbchallenge.dtos.plant.PutPlantDTO;
 import nacho.gallo.techforbchallenge.entities.PlantDetailEntity;
 import nacho.gallo.techforbchallenge.entities.PlantEntity;
 import nacho.gallo.techforbchallenge.entities.UserEntity;
+import nacho.gallo.techforbchallenge.models.PlantDetail;
 import nacho.gallo.techforbchallenge.models.PlantDetailType;
 import nacho.gallo.techforbchallenge.models.User;
 import nacho.gallo.techforbchallenge.repositories.PlantJpaRepository;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PlantServiceImpl implements PlantService {

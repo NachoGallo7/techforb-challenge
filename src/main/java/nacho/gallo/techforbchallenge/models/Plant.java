@@ -1,11 +1,13 @@
 package nacho.gallo.techforbchallenge.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,8 +20,8 @@ public class Plant {
   private String name;
   @JsonProperty("country")
   private String country;
-  @JsonProperty("contry_code")
-  private String contryCode;
+  @JsonProperty("country_code")
+  private String countryCode;
   @JsonProperty("readings")
   private Integer readings;
   @JsonProperty("warnings")
@@ -32,4 +34,6 @@ public class Plant {
   private Boolean isActive;
   @JsonProperty("user")
   private User user;
+  @JsonProperty("plant_details")
+  private Set<PlantDetail> plantDetails = new LinkedHashSet<>();
 }

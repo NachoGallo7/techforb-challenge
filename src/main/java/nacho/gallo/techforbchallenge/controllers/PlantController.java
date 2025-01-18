@@ -52,7 +52,8 @@ public class PlantController {
   @PostMapping
   public ResponseEntity<PlantDTO> create(@RequestBody @Valid PostPlantDTO newPlant,
                                          @RequestHeader(name = "Authorization") String authToken) {
-    return ResponseEntity.ok(plantService.create(newPlant, authToken));
+    PlantDTO test = plantService.create(newPlant, authToken);
+    return ResponseEntity.ok(test);
   }
 
   @PutMapping("{id}")
