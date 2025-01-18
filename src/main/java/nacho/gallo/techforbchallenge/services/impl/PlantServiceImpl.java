@@ -3,8 +3,10 @@ package nacho.gallo.techforbchallenge.services.impl;
 import nacho.gallo.techforbchallenge.dtos.plant.PlantDTO;
 import nacho.gallo.techforbchallenge.dtos.plant.PostPlantDTO;
 import nacho.gallo.techforbchallenge.dtos.plant.PutPlantDTO;
+import nacho.gallo.techforbchallenge.entities.PlantDetailEntity;
 import nacho.gallo.techforbchallenge.entities.PlantEntity;
 import nacho.gallo.techforbchallenge.entities.UserEntity;
+import nacho.gallo.techforbchallenge.models.PlantDetailType;
 import nacho.gallo.techforbchallenge.models.User;
 import nacho.gallo.techforbchallenge.repositories.PlantJpaRepository;
 import nacho.gallo.techforbchallenge.services.JwtService;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -48,6 +51,7 @@ public class PlantServiceImpl implements PlantService {
     return modelMapper.map(plantEntity, PlantDTO.class);
   }
   @Override
+  @Transactional
   public PlantDTO create(PostPlantDTO newPlant, String authToken) {
     UserEntity userEntity = UserEntity.builder().id(getUserFromToken(authToken).getId()).build();
     PlantEntity toSavePlant = modelMapper.map(newPlant, PlantEntity.class);
@@ -55,6 +59,15 @@ public class PlantServiceImpl implements PlantService {
     toSavePlant.setUpdateDate(LocalDateTime.now());
     toSavePlant.setIsActive(true);
     toSavePlant.setUser(userEntity);
+
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.TEMPERATURE));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.PRESSURE));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.WIND));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.LEVELS));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.ENERGY));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.TENSION));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.CARBON_MONOXIDE));
+    toSavePlant.getPlantDetails().add(new PlantDetailEntity(toSavePlant, PlantDetailType.OTHER_GASSES));
 
     PlantEntity savedPlant = plantRepository.saveAndFlush(toSavePlant);
     return modelMapper.map(savedPlant, PlantDTO.class);
@@ -69,6 +82,15 @@ public class PlantServiceImpl implements PlantService {
     plantEntity.setAlerts(updatedPlant.getAlerts());
     plantEntity.setDisabledSensors(updatedPlant.getDisabledSensors());
     plantEntity.setUpdateDate(LocalDateTime.now());
+
+    PlantDetailEntity plantDetailEntity = plantEntity.getPlantDetails().stream()
+        .filter(detail -> detail.getPlantDetailType().equals(PlantDetailType.TEMPERATURE))
+        .findFirst()
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant detail not found"));
+    plantDetailEntity.setReadings(updatedPlant.getReadings());
+    plantDetailEntity.setWarnings(updatedPlant.getWarnings());
+    plantDetailEntity.setAlerts(updatedPlant.getAlerts());
+    plantDetailEntity.setDisabledSensors(updatedPlant.getDisabledSensors());
 
     plantRepository.saveAndFlush(plantEntity);
     return modelMapper.map(plantEntity, PlantDTO.class);

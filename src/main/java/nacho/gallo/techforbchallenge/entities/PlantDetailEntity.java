@@ -1,40 +1,37 @@
 package nacho.gallo.techforbchallenge.entities;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import nacho.gallo.techforbchallenge.models.PlantDetailType;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "PLANT_DETAILS")
 @Entity
-@Table(name = "PLANTS")
-public class PlantEntity extends BaseEntity{
+public class PlantDetailEntity {
+
+  public PlantDetailEntity(PlantEntity plant, PlantDetailType plantDetailType) {
+    this.plant = plant;
+    this.plantDetailType = plantDetailType;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
   private Long id;
-  @Column(name = "name")
-  private String name;
-  @Column(name = "country")
-  private String country;
-  @Column(name = "contry_code")
-  private String contryCode;
   @Column(name = "readings")
   private Integer readings = 0;
   @Column(name = "warnings")
@@ -43,11 +40,10 @@ public class PlantEntity extends BaseEntity{
   private Integer alerts = 0;
   @Column(name = "disabled_sensors")
   private Integer disabledSensors = 0;
-  @Column(name = "is_active")
-  private Boolean isActive;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "plant_detail_type")
+  private PlantDetailType plantDetailType;
   @ManyToOne
-  @JoinColumn(name = "user_id")
-  private UserEntity user;
-  @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<PlantDetailEntity> plantDetails = new LinkedHashSet<>();
+  @JoinColumn(name = "plant_id")
+  private PlantEntity plant;
 }
