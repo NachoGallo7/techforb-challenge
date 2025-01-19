@@ -36,13 +36,13 @@ public class PlantEntity extends BaseEntity{
   @Column(name = "contry_code")
   private String countryCode;
   @Column(name = "readings")
-  private Integer readings = 0;
+  private Integer readings;
   @Column(name = "warnings")
-  private Integer warnings = 0;
+  private Integer warnings;
   @Column(name = "alerts")
-  private Integer alerts = 0;
+  private Integer alerts;
   @Column(name = "disabled_sensors")
-  private Integer disabledSensors = 0;
+  private Integer disabledSensors;
   @Column(name = "is_active")
   private Boolean isActive;
   @ManyToOne

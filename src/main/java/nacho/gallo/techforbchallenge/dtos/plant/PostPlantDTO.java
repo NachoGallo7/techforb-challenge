@@ -20,7 +20,7 @@ public class PostPlantDTO {
   @JsonProperty("country")
   @NotEmpty(message = "Country cannot be empty")
   private String country;
-  @JsonProperty("contry_code")
+  @JsonProperty("country_code")
   @NotEmpty(message = "Contry code cannot be empty")
   private String countryCode;
 }
