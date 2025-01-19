@@ -20,21 +20,21 @@ public class CountryClient {
   private final String baseUrl;
   private final RestTemplate restTemplate;
   private final List<CountryDTO> gracefulResponseList = List.of(
-    new CountryDTO("https://flagcdn.com/ar.svg", "Argentina"),
-    new CountryDTO("https://flagcdn.com/bo.svg", "Bolivia"),
-    new CountryDTO("https://flagcdn.com/br.svg", "Brazil"),
-    new CountryDTO("https://flagcdn.com/cl.svg", "Chile"),
-    new CountryDTO("https://flagcdn.com/co.svg", "Colombia"),
-    new CountryDTO("https://flagcdn.com/cr.svg", "Costa Rica"),
-    new CountryDTO("https://flagcdn.com/ec.svg", "Ecuador"),
-    new CountryDTO("https://flagcdn.com/gt.svg", "Guatemala"),
-    new CountryDTO("https://flagcdn.com/mx.svg", "Mexico"),
-    new CountryDTO("https://flagcdn.com/py.svg", "Paraguay"),
-    new CountryDTO("https://flagcdn.com/pe.svg", "Peru"),
-    new CountryDTO("https://flagcdn.com/pr.svg", "Puerto Rico"),
-    new CountryDTO("https://flagcdn.com/us.svg", "United States"),
-    new CountryDTO("https://flagcdn.com/uy.svg", "Uruguay"),
-    new CountryDTO("https://flagcdn.com/ve.svg", "Venezuela")
+      new CountryDTO("https://flagcdn.com/ar.svg", "Argentina", "AR"),
+      new CountryDTO("https://flagcdn.com/bo.svg", "Bolivia", "BO"),
+      new CountryDTO("https://flagcdn.com/br.svg", "Brazil", "BR"),
+      new CountryDTO("https://flagcdn.com/cl.svg", "Chile", "CL"),
+      new CountryDTO("https://flagcdn.com/co.svg", "Colombia", "CO"),
+      new CountryDTO("https://flagcdn.com/cr.svg", "Costa Rica", "CR"),
+      new CountryDTO("https://flagcdn.com/ec.svg", "Ecuador", "EC"),
+      new CountryDTO("https://flagcdn.com/gt.svg", "Guatemala", "GT"),
+      new CountryDTO("https://flagcdn.com/mx.svg", "Mexico", "MX"),
+      new CountryDTO("https://flagcdn.com/py.svg", "Paraguay", "PY"),
+      new CountryDTO("https://flagcdn.com/pe.svg", "Peru", "PE"),
+      new CountryDTO("https://flagcdn.com/pr.svg", "Puerto Rico", "PR"),
+      new CountryDTO("https://flagcdn.com/us.svg", "United States", "US"),
+      new CountryDTO("https://flagcdn.com/uy.svg", "Uruguay", "UY"),
+      new CountryDTO("https://flagcdn.com/ve.svg", "Venezuela", "VE")
   );
 
   @Autowired

@@ -3,6 +3,8 @@ package nacho.gallo.techforbchallenge.controllers;
 import nacho.gallo.techforbchallenge.dtos.common.ErrorApiDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +26,18 @@ public class ControllerExceptionHandler {
   @ExceptionHandler(ResponseStatusException.class)
   public ResponseEntity<ErrorApiDTO> handleError(ResponseStatusException exception) {
     ErrorApiDTO error = buildError(exception.getReason(), HttpStatus.valueOf(exception.getStatusCode().value()));
+    return ResponseEntity.status(error.getStatus()).body(error);
+  }
+
+  @ExceptionHandler(InternalAuthenticationServiceException.class)
+  public ResponseEntity<ErrorApiDTO> handleError(InternalAuthenticationServiceException exception) {
+    ErrorApiDTO error = buildError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    return ResponseEntity.status(error.getStatus()).body(error);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<ErrorApiDTO> handleError(BadCredentialsException exception) {
+    ErrorApiDTO error = buildError(exception.getMessage(), HttpStatus.BAD_REQUEST);
     return ResponseEntity.status(error.getStatus()).body(error);
   }
 

@@ -13,6 +13,7 @@ public class CountryDTO {
 
   private String flagIconUrl;
   private String name;
+  private String code;
 
   @JsonGetter("flag_icon_url")
   public String getFlagIconUrl() {
@@ -34,4 +35,13 @@ public class CountryDTO {
     this.name = (String) nameMap.get("common");
   }
 
+  @JsonGetter("code")
+  public String getCode() {
+    return code;
+  }
+
+  @JsonSetter("cca2")
+  public void setCode(String code) {
+    this.code = code;
+  }
 }
