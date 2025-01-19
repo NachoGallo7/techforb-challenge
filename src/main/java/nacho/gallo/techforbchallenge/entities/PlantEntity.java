@@ -34,7 +34,7 @@ public class PlantEntity extends BaseEntity{
   @Column(name = "country")
   private String country;
   @Column(name = "contry_code")
-  private String contryCode;
+  private String countryCode;
   @Column(name = "readings")
   private Integer readings = 0;
   @Column(name = "warnings")
