@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,7 @@ public class CountryClient {
       new CountryDTO("https://flagcdn.com/uy.svg", "Uruguay", "UY"),
       new CountryDTO("https://flagcdn.com/ve.svg", "Venezuela", "VE")
   );
+  private List<CountryDTO> countryCacheList = new ArrayList<>();
 
   @Autowired
   public CountryClient(@Value("${client.config.countries-api-url}") String baseUrl, RestTemplate restTemplate) {
@@ -45,6 +47,10 @@ public class CountryClient {
 
   @CircuitBreaker(name = "countriesCB", fallbackMethod = "getAllFallback")
   public List<CountryDTO> getAll() {
+    if(countryCacheList.size() > 0) {
+      return countryCacheList;
+    };
+
     String url = UriComponentsBuilder.fromUriString(baseUrl)
         .queryParam("fields", "flags", "name", "cca2")
         .encode()
@@ -58,7 +64,9 @@ public class CountryClient {
     );
 
     if (response.hasBody()) {
-      return response.getBody().stream().filter(country -> !country.getName().equalsIgnoreCase("Falkland Islands")).toList();
+      List<CountryDTO> result = response.getBody().stream().filter(country -> !country.getName().equalsIgnoreCase("Falkland Islands")).toList();
+      countryCacheList = result;
+      return result;
     } else {
       return List.of();
     }

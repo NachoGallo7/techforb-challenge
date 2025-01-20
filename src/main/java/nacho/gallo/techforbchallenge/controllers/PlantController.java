@@ -1,8 +1,6 @@
 package nacho.gallo.techforbchallenge.controllers;
 
 import jakarta.validation.Valid;
-import nacho.gallo.techforbchallenge.clients.CountryClient;
-import nacho.gallo.techforbchallenge.dtos.country.CountryDTO;
 import nacho.gallo.techforbchallenge.dtos.plant.PlantDTO;
 import nacho.gallo.techforbchallenge.dtos.plant.PostPlantDTO;
 import nacho.gallo.techforbchallenge.dtos.plant.PutPlantDTO;
@@ -23,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("plants")
