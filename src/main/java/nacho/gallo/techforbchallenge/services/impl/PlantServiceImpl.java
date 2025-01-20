@@ -103,11 +103,11 @@ public class PlantServiceImpl implements PlantService {
   @Override
   public void delete(Long id, String authToken) {
     PlantEntity plantEntity = findEntityByIdAndUserId(id, getUserFromToken(authToken).getId());
-    if (!plantEntity.getIsActive()) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "The plant was already removed");
-    }
-    plantEntity.setIsActive(false);
-    plantRepository.saveAndFlush(plantEntity);
+//    if (!plantEntity.getIsActive()) {
+//      throw new ResponseStatusException(HttpStatus.CONFLICT, "The plant was already removed");
+//    }
+//    plantEntity.setIsActive(false);
+    plantRepository.delete(plantEntity);
   }
 
   private PlantEntity findEntityByIdAndUserId(Long id, Long userId) {
