@@ -65,7 +65,6 @@ public class CountryClient {
   }
 
   private List<CountryDTO> getAllFallback(Exception ex) {
-    System.out.println("COUNTRY FALLBACK");
     return gracefulResponseList;
   }
 }

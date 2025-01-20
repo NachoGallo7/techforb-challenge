@@ -45,9 +45,9 @@ public class SecurityConfig {
             .requestMatchers("/ping", "/users/login", "/users/register").permitAll()
             .anyRequest().authenticated()
         )
-        .logout(customizer -> customizer.addLogoutHandler(logoutHandler).logoutUrl("/users/logout"))
         .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        .logout(customizer -> customizer.addLogoutHandler(logoutHandler).logoutUrl("/users/logout"))
         .build();
   }
 

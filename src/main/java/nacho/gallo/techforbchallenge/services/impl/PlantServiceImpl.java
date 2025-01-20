@@ -56,6 +56,7 @@ public class PlantServiceImpl implements PlantService {
   @Override
   @Transactional
   public PlantDTO create(PostPlantDTO newPlant, String authToken) {
+    newPlant.setCountryCode(newPlant.getCountryCode().toLowerCase());
     UserEntity userEntity = UserEntity.builder().id(getUserFromToken(authToken).getId()).build();
     PlantEntity toSavePlant = modelMapper.map(newPlant, PlantEntity.class);
     toSavePlant.setCreationDate(LocalDateTime.now());
